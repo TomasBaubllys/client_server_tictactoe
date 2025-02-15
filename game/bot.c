@@ -3,7 +3,7 @@
 int init_bot(struct Bot* bot, char size) {
     bot -> size = size;
 
-    char abs_size = size * size;
+    unsigned char abs_size = size * size;
 
     bot -> moves = calloc(abs_size, sizeof(char));
     if(!bot -> moves) {
@@ -28,16 +28,16 @@ int init_bot(struct Bot* bot, char size) {
     return 0;
 }
 
-char play(struct Bot *bot, struct TTT_board *board) {
+unsigned char play(struct Bot *bot, struct TTT_board *board) {
     if(board -> edge_len != bot -> size) {
         fprintf(stderr, "Bot setup and board sizes differ\n");
         return 0;
     }
 
-    char abs_size = board -> capacity;
+    unsigned char abs_size = board -> capacity;
     for(int i = 0; i < abs_size; ++i) {
         if(*(bot -> moves + i) != -1 && board -> array[*(unsigned char*)(bot -> moves + i)] == 0) {
-            char ret = *(bot -> moves + i);
+            unsigned char ret = *(bot -> moves + i);
             *(bot -> moves + i) = -1;
             return ret;
         }

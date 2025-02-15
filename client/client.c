@@ -81,12 +81,6 @@ int main(int argc, char *argv[]) {
             break;
         }
 
-        /*if(received == SERVER_WON) {
-            print_board(&board, CLIENT_MARKER);
-            printf("You loose looser\n");
-            break;
-        }*/
-
         if(received == OUT_OF_MOVES) {
             print_board(&board, CLIENT_MARKER);
             printf("Its a drawwww\n");

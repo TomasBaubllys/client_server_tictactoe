@@ -18,9 +18,9 @@
 
 struct TTT_board {
     char *array;
-    char size;
-    char capacity;
-    char edge_len;
+    unsigned char size;
+    unsigned char capacity;
+    unsigned char edge_len;
 };
 
 // initializes the game board, allocates the memory

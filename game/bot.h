@@ -7,7 +7,7 @@
 
 struct Bot {
     char *moves;
-    char size;
+    unsigned char size;
 };
 
 
@@ -15,7 +15,7 @@ struct Bot {
 int init_bot(struct Bot* bot, char size);
 
 // returns the coordinate of the next play
-char play(struct Bot *bot, struct TTT_board *board);
+unsigned char play(struct Bot *bot, struct TTT_board *board);
 
 // frees the bot
 void delete_bot(struct Bot* bot);

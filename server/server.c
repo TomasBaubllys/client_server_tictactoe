@@ -83,21 +83,18 @@ int main(int argc, char *argv[]) {
 
         unsigned char client_play;
 
-
         while(1) {
             int recv_status = recv(client_socket, &client_play, sizeof(char), 0);
             if(client_play == CLIENT_WON || client_play == SERVER_WON) {
                 break;
             }
 
-            /*if(client_play == OUT_OF_MOVES) {
-                break;
-            }*/
-
             mark_board(&board, client_play, CLIENT_MARKER);
-            clear_terminal();
 
-            printf("RECEIVED: %d\n", client_play);
+            #ifdef SERVER_PRINTING
+                clear_terminal();
+                printf("RECEIVED: %d\n", client_play);
+            #endif // SERVER_PRINTING
 
             if(recv_status == 0) {
                 printf("Client disconnected\n");
@@ -109,14 +106,17 @@ int main(int argc, char *argv[]) {
             }
 
             unsigned char curr_play = play(&bot, &board);
-            if(curr_play == OUT_OF_MOVES) {
+            /*if(curr_play == OUT_OF_MOVES) {
                 send(client_socket, &curr_play, sizeof(char), 0);
                 break;
-            }
+            }*/
 
             mark_board(&board, curr_play, SERVER_MARKER);
 
-            print_board(&board, SERVER_MARKER);
+            #ifdef SERVER_PRINTING
+                print_board(&board, SERVER_MARKER);
+            #endif // SERVER_PRINTING
+
             send(client_socket, &curr_play, sizeof(char), 0);
         }
 
