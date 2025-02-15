@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
         int recv_status = recv(client_socket_descriptor, &received, sizeof(char), 0);
 
         if(recv_status == 0) {
-            perror("Server died...\n");
+            fprintf(stderr, "Server died...\n");
             break;
         }
         else if (recv_status < 0) {
@@ -82,6 +82,7 @@ int main(int argc, char *argv[]) {
         }
 
         if(received == OUT_OF_MOVES) {
+            clear_terminal();
             print_board(&board, CLIENT_MARKER);
             printf("Its a drawwww\n");
             break;
@@ -104,6 +105,16 @@ int main(int argc, char *argv[]) {
         #ifdef DEBUG
             printf("RECEIVED: %d\n", received);
         #endif
+
+
+        if(is_stall(&board) == 1) {
+            encoded = OUT_OF_MOVES;
+            send(client_socket_descriptor, &encoded, sizeof(char), 0);
+            clear_terminal();
+            print_board(&board, CLIENT_MARKER);
+            printf("Its a drawwww\n");
+            break;
+        }
     }
 
     delete_board(&board);

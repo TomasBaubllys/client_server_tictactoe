@@ -59,12 +59,20 @@ int main(int argc, char *argv[]) {
 
         printf(GREEN "Client connected!\n" RESET);
 
+        unsigned char size;
+        int recv_status = recv(client_socket, &size, sizeof(char), 0);
+
         // receive the first messege (matrix size) from the client
-        char size;
-        if(recv(client_socket, &size, sizeof(char), 0) <= 0) {
+        if(recv_status < 0) {
             fprintf(stderr, "Something went wrong\n");
             // loop back to listening for clients instead of exiting
             exit(1);
+        }
+
+       if(recv_status == 0) {
+            printf(YELLOW "Client disconnected\n" RESET);
+            // loop back to listening for clients instead of exiting OUCHHH
+           continue;
         }
 
         // create the gameboard
@@ -85,7 +93,7 @@ int main(int argc, char *argv[]) {
 
         while(1) {
             int recv_status = recv(client_socket, &client_play, sizeof(char), 0);
-            if(client_play == CLIENT_WON || client_play == SERVER_WON) {
+            if(client_play == CLIENT_WON || client_play == SERVER_WON || client_play == OUT_OF_MOVES) {
                 break;
             }
 
@@ -106,12 +114,9 @@ int main(int argc, char *argv[]) {
             }
 
             unsigned char curr_play = play(&bot, &board);
-            /*if(curr_play == OUT_OF_MOVES) {
-                send(client_socket, &curr_play, sizeof(char), 0);
-                break;
-            }*/
-
-            mark_board(&board, curr_play, SERVER_MARKER);
+            if(curr_play != OUT_OF_MOVES) {
+                mark_board(&board, curr_play, SERVER_MARKER);
+            }
 
             #ifdef SERVER_PRINTING
                 print_board(&board, SERVER_MARKER);

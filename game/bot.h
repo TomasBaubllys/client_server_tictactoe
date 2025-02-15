@@ -20,5 +20,4 @@ unsigned char play(struct Bot *bot, struct TTT_board *board);
 // frees the bot
 void delete_bot(struct Bot* bot);
 
-
 #endif

@@ -16,6 +16,8 @@
 
 #define PROTOCOL 0
 
+#define SERVER_PRINTING
+
 struct Server {
     int socket_descriptor;
     struct sockaddr_in address;
